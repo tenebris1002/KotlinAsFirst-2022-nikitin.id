@@ -74,7 +74,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 3600 + minute
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (4.445 * 48 * sagenes + 4.445 * 12 * arshins + 4.445 * vershoks) / 100
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (4.445 * 48 * sagenes + 4.445 * 16 * arshins + 4.445 * vershoks) / 100
 
 /**
  * Тривиальная (1 балл)
