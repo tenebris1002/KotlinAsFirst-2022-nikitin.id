@@ -34,8 +34,7 @@ fun discriminant(a: Double, b: Double, c: Double) = sqr(b) - 4 * a * c
  *
  * Поиск одного из корней квадратного уравнения
  */
-fun quadraticEquationRoot(a: Double, b: Double, c: Double) =
-    (-b + sqrt(discriminant(a, b, c))) / (2 * a)
+fun quadraticEquationRoot(a: Double, b: Double, c: Double) = (-b + sqrt(discriminant(a, b, c))) / (2 * a)
 
 /**
  * Пример
@@ -74,7 +73,8 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 3600 + minute
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (4.445 * 48 * sagenes + 4.445 * 16 * arshins + 4.445 * vershoks) / 100
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
+    (48 * sagenes + 16 * arshins + vershoks) * 4.445 / 100
 
 /**
  * Тривиальная (1 балл)
@@ -83,8 +83,8 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = (4.445 *
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
 fun angleInRadian(deg: Int, min: Int, sec: Int): Double {
-    val degrees: Double = deg.toDouble() + (min.toDouble()) / 60 + (sec.toDouble()) / 3600
-    return( degrees * ( PI / 180 ) )
+    val degrees = deg.toDouble() + (min.toDouble()) / 60 + (sec.toDouble()) / 3600
+    return degrees * (PI / 180)
 }
 
 /**
@@ -93,7 +93,7 @@ fun angleInRadian(deg: Int, min: Int, sec: Int): Double {
  * Найти длину отрезка, соединяющего точки на плоскости с координатами (x1, y1) и (x2, y2).
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
-fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt( sqr( x1 - x2 ) + sqr( y1 - y2) )
+fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(sqr(x1 - x2) + sqr(y1 - y2))
 
 /**
  * Простая (2 балла)
@@ -110,7 +110,8 @@ fun thirdDigit(number: Int): Int = (number / 100) % 10
  * прибыл на станцию назначения в h2 часов m2 минут того же дня (например в 13:01).
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
-fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int = ( hoursArrive * 60 + minutesArrive ) - ( hoursDepart * 60 + minutesDepart )
+fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int =
+    (hoursArrive * 60 + minutesArrive) - (hoursDepart * 60 + minutesDepart)
 
 /**
  * Простая (2 балла)
@@ -119,7 +120,8 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double = initial.toDouble() * (1 + ( percent.toDouble() ) / 100).pow(3)
+fun accountInThreeYears(initial: Int, percent: Int): Double =
+    initial.toDouble() * (1 + (percent.toDouble()) / 100).pow(3)
 
 /**
  * Простая (2 балла)
@@ -131,5 +133,5 @@ fun numberRevert(number: Int): Int {
     val third = thirdDigit(number)
     val second = (number / 10) % 10
     val first = number % 10
-    return ( first * 100 + second * 10 + third)
+    return first * 100 + second * 10 + third
 }
