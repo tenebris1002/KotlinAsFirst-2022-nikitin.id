@@ -9,8 +9,7 @@ import lesson1.task1.sqr
  *
  * Лежит ли точка (x, y) внутри окружности с центром в (x0, y0) и радиусом r?
  */
-fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
-    sqr(x - x0) + sqr(y - y0) <= sqr(r)
+fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) = sqr(x - x0) + sqr(y - y0) <= sqr(r)
 
 /**
  * Простая (2 балла)
@@ -18,7 +17,13 @@ fun pointInsideCircle(x: Double, y: Double, x0: Double, y0: Double, r: Double) =
  * Четырехзначное число назовем счастливым, если сумма первых двух ее цифр равна сумме двух последних.
  * Определить, счастливое ли заданное число, вернуть true, если это так.
  */
-fun isNumberHappy(number: Int): Boolean = TODO()
+fun isNumberHappy(number: Int): Boolean {
+    val first = number / 1000
+    val second = (number / 100) % 10
+    val third = (number / 10) % 10
+    val fourth = number % 10
+    return first + second == third + fourth
+}
 
 /**
  * Простая (2 балла)
@@ -46,8 +51,7 @@ fun daysInMonth(month: Int, year: Int): Int = TODO()
  * Вернуть true, если утверждение верно
  */
 fun circleInside(
-    x1: Double, y1: Double, r1: Double,
-    x2: Double, y2: Double, r2: Double
+    x1: Double, y1: Double, r1: Double, x2: Double, y2: Double, r2: Double
 ): Boolean = TODO()
 
 /**
