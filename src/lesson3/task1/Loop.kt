@@ -193,7 +193,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean = n == revert(n)
 
 /**
  * Средняя (3 балла)
@@ -216,6 +216,7 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  */
 fun sin(x: Double, eps: Double): Double {
     var result = x
+    while (result > 2 * PI) result -= 2 * PI
     var num: Double
     var step = 1
     do {
@@ -237,6 +238,7 @@ fun sin(x: Double, eps: Double): Double {
  */
 fun cos(x: Double, eps: Double): Double {
     var result = x
+    while (result > 2 * PI) result -= 2 * PI
     var num: Double
     var step = 1
     do {
@@ -257,14 +259,15 @@ fun cos(x: Double, eps: Double): Double {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var series = 1
-    var number = 1
-    while (digitNumber(series) < n) {
+    var length = 0
+    var number = 0
+    while (length < n){
         number++
-        series = series * (10.0.pow(digitNumber(sqr(number)))).toInt() + sqr(number)
+        length += digitNumber(sqr(number))
     }
-    if (digitNumber(series) != n) while (digitNumber(series) != n) series / 10
-    return series % 10
+    var preLastDigitNumber = digitNumber(sqr(number - 1))
+    while (length - preLastDigitNumber != n - preLastDigitNumber) sqr(number) / 10
+    return sqr(number) % 10
 }
 
 /**
@@ -283,6 +286,6 @@ fun fibSequenceDigit(n: Int): Int {
         number++
         series = series * (10.0.pow(digitNumber(fib(number)))).toInt() + fib(number)
     }
-    if (digitNumber(series) != n) while (digitNumber(series) != n) series / 10
+    while (digitNumber(series) != n) series / 10
     return series % 10
 }
