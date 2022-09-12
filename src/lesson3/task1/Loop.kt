@@ -75,7 +75,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  */
 fun digitNumber(n: Int): Int {
     var count = 0
-    var number = n
+    var number = abs(n)
     do {
         count++
         number /= 10
@@ -148,7 +148,7 @@ fun collatzSteps(x: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    for (i in max(n, m)..n * m) if ((i % m == 0) && (i % n == 0)) return i
+    for (i in max(n, m)..n * m step max(n, m)) if ((i % m == 0) && (i % n == 0)) return i
     return n * m
 }
 
@@ -160,6 +160,7 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
+    if (n == 0 || m == 0) return true
     for (i in 2..min(m, n) / 2 + 1) if ((m % i == 0) && (n % i == 0)) return false
     return (max(m, n) % min(m, n)) != 0
 }
