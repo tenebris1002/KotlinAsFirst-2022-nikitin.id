@@ -265,12 +265,12 @@ fun squareSequenceDigit(n: Int): Int {
         number++
         length += digitNumber(sqr(number))
     }
-    //var preLastDigitNumber = digitNumber(sqr(number - 1))
+    var quadNum = sqr(number)
     while (length != n) {
-        sqr(number) / 10
+        quadNum /= 10
         length - 1
     }
-    return sqr(number) % 10
+    return quadNum % 10
 }
 
 /**
