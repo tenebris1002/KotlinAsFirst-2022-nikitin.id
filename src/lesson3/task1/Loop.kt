@@ -160,7 +160,7 @@ fun lcm(m: Int, n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    if (n == 0 || m == 0) return true
+    if (n == 1 || m == 1) return true
     for (i in 2..min(m, n) / 2 + 1) if ((m % i == 0) && (n % i == 0)) return false
     return (max(m, n) % min(m, n)) != 0
 }
@@ -268,7 +268,7 @@ fun squareSequenceDigit(n: Int): Int {
     var quadNum = sqr(number)
     while (length != n) {
         quadNum /= 10
-        length - 1
+        length -= 1
     }
     return quadNum % 10
 }
@@ -283,12 +283,16 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var series = 1
-    var number = 1
-    while (digitNumber(series) < n) {
+    var length = 0
+    var number = 0
+    while (length < n){
         number++
-        series = series * (10.0.pow(digitNumber(fib(number)))).toInt() + fib(number)
+        length += digitNumber(fib(number))
     }
-    while (digitNumber(series) != n) series / 10
-    return series % 10
+    var fibNum = fib(number)
+    while (length != n) {
+        fibNum /= 10
+        length -= 1
+    }
+    return fibNum % 10
 }
