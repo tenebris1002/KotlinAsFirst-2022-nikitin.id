@@ -265,8 +265,11 @@ fun squareSequenceDigit(n: Int): Int {
         number++
         length += digitNumber(sqr(number))
     }
-    var preLastDigitNumber = digitNumber(sqr(number - 1))
-    while (length - preLastDigitNumber != n - preLastDigitNumber) sqr(number) / 10
+    //var preLastDigitNumber = digitNumber(sqr(number - 1))
+    while (length != n) {
+        sqr(number) / 10
+        length - 1
+    }
     return sqr(number) % 10
 }
 
