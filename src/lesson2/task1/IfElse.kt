@@ -68,11 +68,9 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-    return if ((age % 5 == 0) || (age % 100 in 11..19) || (age % 10 > 5)) "$age лет"
-    else if (age % 10 == 1) "$age год"
-    else "$age года"
-}
+fun ageDescription(age: Int): String = if ((age % 5 == 0) || (age % 100 in 11..19) || (age % 10 > 5)) "$age лет"
+else if (age % 10 == 1) "$age год"
+else "$age года"
 
 /**
  * Простая (2 балла)
@@ -140,8 +138,8 @@ fun rookOrBishopThreatens(
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    val maxS = max(a, max(b,c))
-    val minS = min(a, min(b,c))
+    val maxS = maxOf(a, b, c)
+    val minS = minOf(a, b, c)
     val midS = a + b + c - maxS - minS
     return if ((a > b + c) || (b > a + c) || (c > a + b)) -1
     else if (sqr(maxS) == sqr(minS) + sqr(midS)) 1
@@ -159,7 +157,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     return if ((a in c..d) && (b in c..d)) b - a
-    else if ((c in a..b)&&(d in a..b)) d - c
+    else if ((c in a..b) && (d in a..b)) d - c
     else if (a in c..d) d - a
     else if (b in c..d) b - c
     else if (c in a..b) c - b
