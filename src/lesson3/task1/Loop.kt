@@ -4,6 +4,7 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import lesson1.task1.thirdDigit
+import javax.print.DocFlavor.INPUT_STREAM
 import kotlin.math.*
 // Урок 3: циклы
 // Максимальное количество баллов = 9
@@ -143,10 +144,9 @@ fun collatzSteps(x: Int): Int {
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int {
-    for (i in max(n, m)..n * m step max(n, m)) if ((i % m == 0) && (i % n == 0)) return i
-    return n * m
-}
+fun evklid(m: Int, n: Int): Int =
+    if (max(m, n) % min(n, m) == 0) min(n, m) else evklid(min(n, m), max(m, n) % min(n, m))
+fun lcm(m: Int, n: Int): Int = (n * m) / evklid(n, m)
 
 /**
  * Средняя (3 балла)
@@ -155,11 +155,7 @@ fun lcm(m: Int, n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean {
-    if (n == 1 || m == 1) return true
-    for (i in 2..min(m, n) / 2 + 1) if ((m % i == 0) && (n % i == 0)) return false
-    return (max(m, n) % min(m, n)) != 0
-}
+fun isCoPrime(m: Int, n: Int): Boolean = evklid(n, m) == 1
 
 /**
  * Средняя (3 балла)
@@ -211,8 +207,7 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
 fun sin(x: Double, eps: Double): Double {
-    var result = x
-    while (result > 2 * PI) result -= 2 * PI
+    var result = x % (2 * PI)
     var num: Double
     var step = 1
     do {
@@ -233,8 +228,7 @@ fun sin(x: Double, eps: Double): Double {
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
 fun cos(x: Double, eps: Double): Double {
-    var result = x
-    while (result > 2 * PI) result -= 2 * PI
+    var result = x % (2 * PI)
     var num: Double
     var step = 1
     do {
@@ -257,7 +251,7 @@ fun cos(x: Double, eps: Double): Double {
 fun squareSequenceDigit(n: Int): Int {
     var length = 0
     var number = 0
-    while (length < n){
+    while (length < n) {
         number++
         length += digitNumber(sqr(number))
     }
