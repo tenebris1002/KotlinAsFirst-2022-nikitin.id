@@ -146,6 +146,7 @@ fun collatzSteps(x: Int): Int {
  */
 fun evklid(m: Int, n: Int): Int =
     if (max(m, n) % min(n, m) == 0) min(n, m) else evklid(min(n, m), max(m, n) % min(n, m))
+
 fun lcm(m: Int, n: Int): Int = (n * m) / evklid(n, m)
 
 /**
