@@ -4,7 +4,6 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import lesson1.task1.thirdDigit
-import javax.print.DocFlavor.INPUT_STREAM
 import kotlin.math.*
 // Урок 3: циклы
 // Максимальное количество баллов = 9
