@@ -215,7 +215,7 @@ fun sin(x: Double, eps: Double): Double {
         num = xCh.pow(step * 2 + 1) / factorial(step * 2 + 1)
         if (step % 2 == 0) result += num else result -= num
         step++
-    } while (num >= eps)
+    } while (abs(num) >= eps)
     return result
 }
 
@@ -237,7 +237,7 @@ fun cos(x: Double, eps: Double): Double {
         num = xCh.pow(step * 2) / factorial(step * 2)
         if (step % 2 == 0) result += num else result -= num
         step++
-    } while (num >= eps)
+    } while (abs(num) >= eps)
     return result
 }
 
