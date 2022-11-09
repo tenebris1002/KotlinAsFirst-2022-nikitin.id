@@ -140,11 +140,9 @@ fun mean(list: List<Double>): Double = if (list.isNotEmpty()) list.sum() / list.
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    if (list.isNotEmpty()) {
-        val meanList = mean(list)
-        for (i in list.indices) {
-            list[i] -= meanList
-        }
+    val meanList = mean(list)
+    for (i in list.indices) {
+        list[i] -= meanList
     }
     return list
 }
@@ -171,7 +169,7 @@ fun times(a: List<Int>, b: List<Int>): Int {
  */
 fun polynom(p: List<Int>, x: Int): Int {
     var result = 0
-    if (p.isNotEmpty()) for (i in p.indices) result += p[i] * (x.toDouble().pow(i).toInt())
+    for (i in p.indices) result += p[i] * (x.toDouble().pow(i).toInt())
     return result
 }
 
@@ -186,8 +184,8 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    var sum = 1
-    for (i in 1 until list.size) {
+    var sum = 0
+    for (i in 0 until list.size) {
         sum += list[i]
         list[i] = sum
     }
@@ -213,7 +211,7 @@ fun factorize(n: Int): List<Int> {
             }
         }
     }
-    return list.sorted()
+    return list
 }
 
 /**
@@ -223,7 +221,8 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
+
 
 /**
  * Средняя (3 балла)
@@ -232,7 +231,15 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var nEx = n
+    val list = mutableListOf<Int>()
+    while (nEx != 0) {
+        list.add(0,nEx % base)
+        nEx /= base
+    }
+    return list
+}
 
 /**
  * Сложная (4 балла)
@@ -245,7 +252,16 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val list = convert(n, base)
+    var str = ""
+    for (element in list){
+        if (element > 9) {
+            str += (element + 87).toChar()
+        } else str += element.toString()
+    }
+    return str
+}
 
 /**
  * Средняя (3 балла)
@@ -254,7 +270,15 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var n = 0
+    var result = 0
+    for (element in digits.reversed()) {
+        result += element * base.toDouble().pow(n).toInt()
+        n += 1
+    }
+    return result
+}
 
 /**
  * Сложная (4 балла)
@@ -287,4 +311,80 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val units = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",)
+    val dozens = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяноста")
+    val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    val toTwenty = listOf("одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+    val specials = listOf("одна", "две", "тысяча", "тысячи", "тысяч")
+    val list = mutableListOf<String>()
+    var iDigit: Int
+    var iShift = 0
+    var specialPaste = ""
+    for (i in n.toString().indices){
+        iDigit = n.toString().reversed()[i].digitToInt()
+        if (iDigit != 0) {
+            if (i % 3 == 0) {
+                if (i / 3 == 1) {
+                    when (iDigit) {
+                        1 -> {
+                            list.add(0, specials[0])
+                            specialPaste = specials[2]
+                        }
+
+                        2 -> {
+                            list.add(0, specials[1])
+                            specialPaste = specials[3]
+                        }
+
+                        3, 4 -> {
+                            list.add(0, units[iDigit - 1])
+                            specialPaste = specials[3]
+                        }
+
+                        else -> {
+                            list.add(0, units[iDigit - 1])
+                            specialPaste = specials[4]
+                        }
+                    }
+
+                } else {
+                    list.add(0, units[iDigit - 1])
+                }
+            }
+            if (i % 3 == 1) {
+                if (iDigit > 1) {
+                    list.add(0, dozens[iDigit - 1])
+                } else {
+                    list.add(0, toTwenty[n.toString().reversed()[i - 1].digitToInt() - 1])
+                    if (i / 3 == 1) {
+                        if (n.toString().reversed()[i - 1].digitToInt() != 0) {
+                            list.removeAt(list.size - 3)
+                        }
+                    } else {
+                        list.removeAt(list.size - 1)
+                    }
+                    if (i / 3 == 1) {
+                        iShift += 1
+                        if (specialPaste == "") {
+                            specialPaste = specials[4]
+                        }
+                    }
+                }
+            }
+            if (i % 3 == 2) {
+                list.add(0, hundreds[iDigit - 1])
+                if ((i / 3 == 1) && (specialPaste == "")) {
+                    specialPaste = specials[4]
+                }
+            }
+
+        } else if (i / 3 == 1) {
+            iShift += 1
+        }
+    }
+    if (specialPaste != "") {
+        list.add(3 - (6 - n.toString().length + iShift), specialPaste)
+    }
+    return list.joinToString(separator = " ")
+}
