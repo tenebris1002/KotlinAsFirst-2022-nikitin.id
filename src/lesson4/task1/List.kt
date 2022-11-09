@@ -362,7 +362,9 @@ fun russian(n: Int): String {
                             list.removeAt(list.size - 3)
                         }
                     } else {
-                        list.removeAt(list.size - 1)
+                        if (n.toString().reversed()[i - 1].digitToInt() != 0) {
+                            list.removeAt(list.size - 1)
+                        }
                     }
                     if (i / 3 == 1) {
                         iShift += 1
