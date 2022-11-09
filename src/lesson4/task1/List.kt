@@ -359,6 +359,11 @@ fun russian(n: Int): String {
                     list.add(0, toTwenty[n.toString().reversed()[i - 1].digitToInt()])
                     if (n.toString().reversed()[i - 1].digitToInt() != 0) {
                         list.remove(units[n.toString().reversed()[i - 1].digitToInt() - 1])
+                        if (n.toString().reversed()[i - 1].digitToInt() in 1..2){
+                            list.remove("одна")
+                            list.remove("две")
+                            specialPaste = ""
+                        }
                         if (i / 3 == 1) {
                             iShift += 1
                             if (specialPaste == "") {
