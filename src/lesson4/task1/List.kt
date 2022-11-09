@@ -313,9 +313,9 @@ fun roman(n: Int): String = TODO()
  */
 fun russian(n: Int): String {
     val units = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",)
-    val dozens = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
+    val dozens = listOf("двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
     val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-    val toTwenty = listOf("одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+    val toTwenty = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
     val specials = listOf("одна", "две", "тысяча", "тысячи", "тысяч")
     val list = mutableListOf<String>()
     var iDigit: Int
@@ -354,16 +354,17 @@ fun russian(n: Int): String {
             }
             if (i % 3 == 1) {
                 if (iDigit > 1) {
-                    list.add(0, dozens[iDigit - 1])
+                    list.add(0, dozens[iDigit - 2])
                 } else {
-                    list.add(0, toTwenty[n.toString().reversed()[i - 1].digitToInt() - 1])
+                    list.add(0, toTwenty[n.toString().reversed()[i - 1].digitToInt()])
                     if (n.toString().reversed()[i - 1].digitToInt() != 0) {
                         list.remove(units[n.toString().reversed()[i - 1].digitToInt() - 1])
-                    }
-                    if (i / 3 == 1) {
-                        iShift += 1
-                        if (specialPaste == "") {
-                            specialPaste = specials[4]
+                        if (i / 3 == 1) {
+                            iShift += 1
+                            if (specialPaste == "") {
+                                specialPaste = specials[4]
+                            }
+
                         }
                     }
                 }
