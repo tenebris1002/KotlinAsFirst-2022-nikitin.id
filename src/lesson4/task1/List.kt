@@ -238,7 +238,7 @@ fun convert(n: Int, base: Int): List<Int> {
         list.add(0,nEx % base)
         nEx /= base
     }
-    return list
+    return if (list.isEmpty()) listOf(0) else list
 }
 
 /**
@@ -260,7 +260,7 @@ fun convertToString(n: Int, base: Int): String {
             str += (element + 87).toChar()
         } else str += element.toString()
     }
-    return str
+    return if (str == "") "0" else str
 }
 
 /**
@@ -313,7 +313,7 @@ fun roman(n: Int): String = TODO()
  */
 fun russian(n: Int): String {
     val units = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",)
-    val dozens = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяноста")
+    val dozens = listOf("десять", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
     val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
     val toTwenty = listOf("одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
     val specials = listOf("одна", "две", "тысяча", "тысячи", "тысяч")
