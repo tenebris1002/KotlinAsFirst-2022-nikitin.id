@@ -362,14 +362,10 @@ fun russian(n: Int): String {
                         if (n.toString().reversed()[i - 1].digitToInt() in 1..2){
                             list.remove("одна")
                             list.remove("две")
-                            specialPaste = ""
                         }
                         if (i / 3 == 1) {
                             iShift += 1
-                            if (specialPaste == "") {
-                                specialPaste = specials[4]
-                            }
-
+                            specialPaste = specials[4]
                         }
                     }
                 }
