@@ -357,7 +357,9 @@ fun russian(n: Int): String {
                     list.add(0, dozens[iDigit - 1])
                 } else {
                     list.add(0, toTwenty[n.toString().reversed()[i - 1].digitToInt() - 1])
-                    list.remove(units[n.toString().reversed()[i - 1].digitToInt() - 1])
+                    if (n.toString().reversed()[i - 1].digitToInt() != 0) {
+                        list.remove(units[n.toString().reversed()[i - 1].digitToInt() - 1])
+                    }
                     if (i / 3 == 1) {
                         iShift += 1
                         if (specialPaste == "") {
