@@ -256,7 +256,7 @@ fun convertToString(n: Int, base: Int): String {
         if (element > 9) str += (element + charOffSet).toChar()
         else str += element.toString()
     }
-    return str.reversed().ifEmpty { "0" }
+    return str.ifEmpty { "0" }
 }
 
 /**
