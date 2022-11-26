@@ -3,7 +3,6 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
-import lesson7.task1.transliterate
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -202,14 +201,11 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
 fun factorize(n: Int): List<Int> {
     var number = n
     val list = mutableListOf<Int>()
+    var i = 2
     while (number != 1) {
-        for (i in 2..number) {
-            if (number % i == 0) {
-                number /= i
-                list.add(i)
-                break
-            }
-        }
+        while (number % i != 0) i += 1
+        number /= i
+        list.add(i)
     }
     return list
 }
@@ -235,10 +231,10 @@ fun convert(n: Int, base: Int): List<Int> {
     var nEx = n
     val list = mutableListOf<Int>()
     while (nEx != 0) {
-        list.add(0,nEx % base)
+        list.add(0, nEx % base)
         nEx /= base
     }
-    return if (list.isEmpty()) listOf(0) else list
+    return if (list.isEmpty()) listOf(0) else list.reversed()
 }
 
 /**
@@ -253,14 +249,14 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
+    val charOffSet = 'a'.code - 10
     val list = convert(n, base)
-    var str = ""
-    for (element in list){
-        if (element > 9) {
-            str += (element + 87).toChar()
-        } else str += element.toString()
+    var str = String()
+    for (element in list) {
+        if (element > 9) str += (element + charOffSet).toChar()
+        else str += element.toString()
     }
-    return if (str == "") "0" else str
+    return str.reversed().ifEmpty { "0" }
 }
 
 /**
@@ -271,11 +267,9 @@ fun convertToString(n: Int, base: Int): String {
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
 fun decimal(digits: List<Int>, base: Int): Int {
-    var n = 0
     var result = 0
-    for (element in digits.reversed()) {
-        result += element * base.toDouble().pow(n).toInt()
-        n += 1
+    for ((index, element) in digits.reversed().withIndex()) {
+        result += element * base.toDouble().pow(index).toInt()
     }
     return result
 }
@@ -313,76 +307,50 @@ fun roman(n: Int): String = TODO()
  */
 fun russian(n: Int): String {
     val units = listOf("один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять",)
-    val dozens = listOf("двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
-    val hundreds = listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
-    val toTwenty = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
-    val specials = listOf("одна", "две", "тысяча", "тысячи", "тысяч")
+    val dozens =
+        listOf("двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
+    val hundreds =
+        listOf("сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+    val toTwenty = listOf(
+        "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать",
+        "семнадцать", "восемнадцать", "девятнадцать")
     val list = mutableListOf<String>()
-    var iDigit: Int
-    var iShift = 0
-    var specialPaste = ""
-    for (i in n.toString().indices){
-        iDigit = n.toString().reversed()[i].digitToInt()
-        if (iDigit != 0) {
-            if (i % 3 == 0) {
-                if (i / 3 == 1) {
-                    when (iDigit) {
-                        1 -> {
-                            list.add(0, specials[0])
-                            specialPaste = specials[2]
-                        }
-
-                        2 -> {
-                            list.add(0, specials[1])
-                            specialPaste = specials[3]
-                        }
-
-                        3, 4 -> {
-                            list.add(0, units[iDigit - 1])
-                            specialPaste = specials[3]
-                        }
-
-                        else -> {
-                            list.add(0, units[iDigit - 1])
-                            specialPaste = specials[4]
-                        }
-                    }
-
-                } else {
-                    list.add(0, units[iDigit - 1])
-                }
-            }
-            if (i % 3 == 1) {
-                if (iDigit > 1) {
-                    list.add(0, dozens[iDigit - 2])
-                } else {
-                    list.add(0, toTwenty[n.toString().reversed()[i - 1].digitToInt()])
-                    if (n.toString().reversed()[i - 1].digitToInt() != 0) {
-                        list.remove(units[n.toString().reversed()[i - 1].digitToInt() - 1])
-                        if (n.toString().reversed()[i - 1].digitToInt() in 1..2){
-                            list.remove("одна")
-                            list.remove("две")
-                        }
-                        if (i / 3 == 1) {
-                            iShift += 1
-                            specialPaste = specials[4]
+    val nl = n.toString().toList()
+    var flagToTwenty = false
+    var position: Int
+    var number: Int
+    for ((index, num) in nl.withIndex()) {
+        position = nl.size - index
+        number = num.digitToInt()
+        if (position == 3) flagToTwenty = false
+        if (num != '0') {
+            if (position % 3 == 1) {
+                if (!flagToTwenty) {
+                    if ((position - 1) / 3 == 0) list.add(units[number - 1])
+                    else {
+                        when (number) {
+                            1 -> list.add("одна тысяча")
+                            2 -> list.add("две тысячи")
+                            3, 4 -> list.add("${units[number - 1]} тысячи")
+                            else -> list.add("${units[number - 1]} тысяч")
                         }
                     }
                 }
             }
-            if (i % 3 == 2) {
-                list.add(0, hundreds[iDigit - 1])
-                if ((i / 3 == 1) && (specialPaste == "")) {
-                    specialPaste = specials[4]
+            if (position % 3 == 2) {
+                if (number > 1) list.add(dozens[number - 2])
+                else {
+                    flagToTwenty = true
+                    list.add(toTwenty[nl[index + 1].digitToInt()])
                 }
+                if (((position - 1) / 3 == 1) && ((nl[index + 1].digitToInt() == 0) || flagToTwenty)) list[index] += " тысяч"
             }
-
-        } else if (i / 3 == 1) {
-            iShift += 1
+            if (position % 3 == 0) {
+                list.add(hundreds[number - 1])
+                if (((position - 1) / 3 == 1) && (nl[index + 1].digitToInt() == 0) && (nl[index + 2].digitToInt() == 0))
+                    list[index] += " тысяч"
+            }
         }
-    }
-    if (specialPaste != "") {
-        list.add(3 - (6 - n.toString().length + iShift), specialPaste)
     }
     return list.joinToString(separator = " ")
 }
