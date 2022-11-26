@@ -343,7 +343,8 @@ fun russian(n: Int): String {
                     flagToTwenty = true
                     list.add(toTwenty[nl[index + 1].digitToInt()])
                 }
-                if (((position - 1) / 3 == 1) && ((nl[index + 1].digitToInt() == 0) || flagToTwenty)) list[index] += " тысяч"
+                if (((position - 1) / 3 == 1) && ((nl[index + 1].digitToInt() == 0) || flagToTwenty))
+                    list[index] += " тысяч"
             }
             if (position % 3 == 0) {
                 list.add(hundreds[number - 1])
