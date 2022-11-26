@@ -231,7 +231,7 @@ fun convert(n: Int, base: Int): List<Int> {
     var nEx = n
     val list = mutableListOf<Int>()
     while (nEx != 0) {
-        list.add(0, nEx % base)
+        list.add(nEx % base)
         nEx /= base
     }
     return if (list.isEmpty()) listOf(0) else list.reversed()
