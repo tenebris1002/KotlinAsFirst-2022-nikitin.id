@@ -152,7 +152,15 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    val result = mutableSetOf<String>()
+    for (name in a) {
+        if (name in b) {
+            result.add(name)
+        }
+    }
+    return result.toList()
+}
 
 /**
  * Средняя (3 балла)
@@ -171,7 +179,15 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    val result = (mapA + mapB).toMutableMap()
+    for ((key, value) in result) {
+        if ((mapB[key] != mapA[key]) && mapB[key] != null && mapA[key] != null) {
+            result[key] = "${mapA[key]}, ${mapB[key]}"
+        }
+    }
+    return result
+}
 
 /**
  * Средняя (4 балла)
@@ -183,7 +199,18 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    val result = mutableMapOf<String, Double>()
+    val count = mutableMapOf<String, Double>()
+    for ((stock, price) in stockPrices) {
+        result[stock] = result.getOrDefault(stock, 0.0) + price
+        count[stock] = count.getOrDefault(stock, 0.0) + 1.0
+    }
+    for ((stock, allPrice) in result) {
+        result[stock] = allPrice / count[stock]!!
+    }
+    return result
+}
 
 /**
  * Средняя (4 балла)
