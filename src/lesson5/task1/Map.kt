@@ -1,9 +1,11 @@
-@file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
+@file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence", "FLOAT_LITERAL_CONFORMS_INFINITY")
 
 package lesson5.task1
 
+import lesson1.task1.seconds
 import ru.spbstu.wheels.toMutableMap
 import kotlin.math.max
+import kotlin.math.min
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -231,15 +233,9 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    var minPrice = 99.0E99
-    var result: String? = null
-    for ((name, pair) in stuff) {
-        if (pair.first == kind && pair.second < minPrice) {
-            minPrice = pair.second
-            result = name
-        }
-    }
-    return result
+    if (stuff.filter { it.value.first == kind }.isEmpty()) return null
+    else stuff.forEach { if (it.value.second == stuff.minOf { it.value.second }) return it.key }
+    return null
 }
 
 /**
