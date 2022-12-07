@@ -2,11 +2,6 @@
 
 package lesson5.task1
 
-import lesson1.task1.seconds
-import ru.spbstu.wheels.toMutableMap
-import kotlin.math.max
-import kotlin.math.min
-
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -233,7 +228,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    if (stuff.filter { it.value.first == kind }.isEmpty()) return null
+    if (stuff.filter { it.value.first.equals(kind) }.isEmpty()) return null
     else stuff.forEach {
         if (it.value.second == stuff.minOf { it.value.second }) return it.key
     }
@@ -339,8 +334,15 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
-
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    var result = (-1 to -1)
+    for (n in list) {
+        if (number - n in list && list.indexOf(n) != list.indexOf(number - n)) {
+            return (list.indexOf(n) to list.indexOf(number - n))
+        }
+    }
+    return result
+}
 /**
  * Очень сложная (8 баллов)
  *
