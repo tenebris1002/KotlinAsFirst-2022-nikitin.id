@@ -251,12 +251,12 @@ fun convert(n: Int, base: Int): List<Int> {
 fun convertToString(n: Int, base: Int): String {
     val charOffSet = 'a'.code - 10
     val list = convert(n, base)
-    var str = String()
+    var str = StringBuilder()
     for (element in list) {
-        if (element > 9) str += (element + charOffSet).toChar()
-        else str += element.toString()
+        if (element > 9) str.append((element + charOffSet).toChar())
+        else str.append(element)
     }
-    return str.ifEmpty { "0" }
+    return str.toString().ifEmpty { "0" }
 }
 
 /**

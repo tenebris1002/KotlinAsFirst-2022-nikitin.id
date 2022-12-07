@@ -2,6 +2,9 @@
 
 package lesson5.task1
 
+import ru.spbstu.wheels.toMutableMap
+import kotlin.math.max
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -97,12 +100,12 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    val result = mutableMapOf<Int, List<String>>()
+    val result = mutableMapOf<Int, MutableList<String>>()
     for ((key, value) in grades) {
         if (result[value] != null) {
-            result[value] = result[value]!! + key
+            result[value]!!.add(key)
         } else {
-            result[value] = listOf(key)
+            result[value] = mutableListOf(key)
         }
     }
     return result
@@ -154,8 +157,8 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val result = mutableSetOf<String>()
-    for (name in a) {
-        if (name in b) {
+    for (name in a.distinct()) {
+        if (name in b.distinct()) {
             result.add(name)
         }
     }
@@ -227,7 +230,17 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
+    var minPrice = 99.0E99
+    var result: String? = null
+    for ((name, pair) in stuff) {
+        if (pair.first == kind && pair.second < minPrice) {
+            minPrice = pair.second
+            result = name
+        }
+    }
+    return result
+}
 
 /**
  * Средняя (3 балла)
@@ -252,7 +265,14 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  * Например:
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
-fun extractRepeats(list: List<String>): Map<String, Int> = TODO()
+fun extractRepeats(list: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    for (element in list) {
+        if (element in result) result[element] = result[element]!! + 1
+        else result[element] = 1
+    }
+    return result.filter { it.value != 1 }
+}
 
 /**
  * Средняя (3 балла)
