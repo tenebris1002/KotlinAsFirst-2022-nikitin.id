@@ -337,7 +337,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     var result = (-1 to -1)
     for (n in list) {
-        if (number - n in list && list.indexOf(n) != list.indexOf(number - n)) {
+        if (number - n in list && list.indexOf(n) != list.lastIndexOf(number - n)) {
             return (list.indexOf(n) to list.indexOf(number - n))
         }
     }
