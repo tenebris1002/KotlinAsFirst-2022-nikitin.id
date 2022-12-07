@@ -233,9 +233,10 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    if (stuff.filter { it.value.first == kind }.isEmpty()) return null
-    else stuff.forEach { if (it.value.second == stuff.minOf { it.value.second }) return it.key }
-    return null
+    var result: String? = null
+    val minPrice = stuff.minOf { it.value.second }
+    stuff.filter { it.value.first == kind }.forEach { if (it.value.second == minPrice) result = it.key }
+    return result
 }
 
 /**
@@ -337,7 +338,15 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val result = (-1 to -1)
+    for (i in list) {
+        if (number - i in list.subList(list.indexOf(i) + 1, list.size)) {
+            return (list.indexOf(i) to list.indexOf(number - i))
+        }
+    }
+    return result
+}
 
 /**
  * Очень сложная (8 баллов)
