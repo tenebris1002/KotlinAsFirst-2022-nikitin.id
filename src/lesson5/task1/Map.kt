@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import kotlin.math.min
+
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -228,11 +230,14 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *   ) -> "Мария"
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
-    if (stuff.filter { it.value.first.equals(kind) }.isEmpty()) return null
-    else stuff.forEach {
-        if (it.value.second == stuff.minOf { it.value.second }) return it.key
+    var result: String? = null
+    val minPrice = stuff.minOf { it.value.second }
+    for ((name, pair) in stuff.filter { it.value.first == kind }) {
+        if (pair.second == minPrice) {
+            result = name
+        }
     }
-    return null
+    return result
 }
 
 /**
