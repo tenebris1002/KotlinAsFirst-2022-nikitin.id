@@ -2,6 +2,9 @@
 
 package lesson6.task1
 
+import java.lang.IllegalArgumentException
+import java.lang.StringBuilder
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -102,7 +105,17 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    var result = StringBuilder()
+    if (phone.filter { it in "1234567890+-() " } != phone ||
+        phone.filter { it in "1234567890()" }.contains("()")
+    ) return ""
+    else {
+        if (phone.trim().contains(Regex("""^\+"""))) result.append("+")
+        result.append(phone.filter { it !in "+-() " })
+    }
+    return result.toString()
+}
 
 /**
  * Средняя (5 баллов)
@@ -114,7 +127,10 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    if (jumps.filter { it in "1234567890-% " } != jumps || !jumps.contains(Regex("""\d"""))) return -1
+    return jumps.filter { it !in "-%" }.split(Regex("""\s+""")).map { it.toInt() }.max()
+}
 
 /**
  * Сложная (6 баллов)
@@ -138,7 +154,20 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    if (expression.contains(Regex("""(\d\s+\d) | (\D\s+\D) | (\s\s+)"""))) throw IllegalArgumentException()
+    val numbers = expression.filter { it != ' ' }.split(Regex("""\+|-""")).map { it.toInt() }
+    var result = numbers[0]
+    var count = 1
+    for (c in expression.filter { it in "+-" }) {
+        when (c) {
+            '+' -> result += numbers[count]
+            '-' -> result -= numbers[count]
+        }
+        count += 1
+    }
+    return result
+}
 
 /**
  * Сложная (6 баллов)
@@ -162,7 +191,15 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    if (description.contains(Regex("""(\s\s+) | (\d\s) | (\.\D) | (а-я\d) | (;\w)""")) || description.isEmpty())
+        return ""
+    val productMap = mutableMapOf<Double, String>()
+    description.split("; ").forEach {
+        productMap[it.split(" ")[1].toDouble()] = it.split(" ")[0]
+    }
+    return productMap[productMap.maxOf { it.key }]!!
+}
 
 /**
  * Сложная (6 баллов)
