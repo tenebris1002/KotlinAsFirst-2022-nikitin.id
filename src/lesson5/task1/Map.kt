@@ -2,8 +2,6 @@
 
 package lesson5.task1
 
-import kotlin.math.min
-
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
 // Рекомендуемое количество баллов = 9
@@ -156,8 +154,8 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
     val result = mutableSetOf<String>()
-    for (name in a.distinct()) {
-        if (name in b.distinct()) {
+    for (name in a.toSet()) {
+        if (name in b.toSet()) {
             result.add(name)
         }
     }
@@ -203,13 +201,11 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     val result = mutableMapOf<String, Double>()
-    val count = mutableMapOf<String, Double>()
-    for ((stock, price) in stockPrices) {
-        result[stock] = result.getOrDefault(stock, 0.0) + price
-        count[stock] = count.getOrDefault(stock, 0.0) + 1.0
-    }
-    for ((stock, allPrice) in result) {
-        result[stock] = allPrice / count[stock]!!
+    var price: Double
+    stockPrices.groupBy { it.first }.forEach {
+        price = 0.0
+        it.value.forEach { price += it.second }
+        result[it.key] = (price / it.value.size.toDouble())
     }
     return result
 }
@@ -231,9 +227,10 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var result: String? = null
-    if (stuff.filter { it.value.first == kind }.isEmpty()) return null
-    val minPrice = stuff.filter { it.value.first == kind }.minOf { it.value.second }
-    for ((name, pair) in stuff.filter { it.value.first == kind }) {
+    val filteredStuff = stuff.filter { it.value.first == kind }
+    if (filteredStuff.isEmpty()) return null
+    val minPrice = filteredStuff.minOf { it.value.second }
+    for ((name, pair) in filteredStuff) {
         if (pair.second == minPrice) {
             result = name
         }
@@ -266,10 +263,7 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean = TODO()
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
     val result = mutableMapOf<String, Int>()
-    for (element in list) {
-        if (element in result) result[element] = result[element]!! + 1
-        else result[element] = 1
-    }
+    list.forEach { result[it] = result.getOrPut(it) { 0 } + 1 }
     return result.filter { it.value != 1 }
 }
 
@@ -341,13 +335,16 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    var result = (-1 to -1)
-    for (n in list) {
-        if (number - n in list && list.indexOf(n) != list.lastIndexOf(number - n)) {
-            return (list.indexOf(n) to list.indexOf(number - n))
+    val mapOfNumbers = mutableMapOf<Int, MutableSet<Int>>()
+    for (n in list.indices) mapOfNumbers.getOrPut(list[n]) { mutableSetOf() }.add(n)
+    mapOfNumbers.forEach {
+        if (number - it.key in mapOfNumbers.keys) {
+            if (number - it.key == it.key) {
+                if (it.value.size > 1) return (it.value.elementAt(0) to it.value.elementAt(1))
+            } else return (it.value.elementAt(0) to mapOfNumbers[number - it.key]!!.elementAt(0))
         }
     }
-    return result
+    return (-1 to -1)
 }
 /**
  * Очень сложная (8 баллов)

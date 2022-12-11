@@ -108,7 +108,9 @@ fun dateDigitToStr(digital: String): String = TODO()
 fun flattenPhoneNumber(phone: String): String {
     var result = StringBuilder()
     if (phone.filter { it in "1234567890+-() " } != phone ||
-        phone.filter { it in "1234567890()" }.contains("()")
+        (phone.filter { it in "1234567890()" }.contains(Regex("""(\(\))|(^\d*\))|(\(\d*$)|(^\d*\(\d*\)$)""")) &&
+                phone.contains(Regex("""[()]"""))
+                )
     ) return ""
     else {
         if (phone.trim().contains(Regex("""^\+"""))) result.append("+")
@@ -128,7 +130,8 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    if (jumps.filter { it in "1234567890-% " } != jumps || !jumps.contains(Regex("""\d"""))) return -1
+    if (jumps.filter { it in "1234567890-% " } != jumps || !jumps.contains(Regex("""\d""")) ||
+        jumps.contains(Regex("""(\d[-%])|([-%]\d)|(^\s)|(\s$)|(\s\s+)|([%-][%-]+)"""))) return -1
     return jumps.filter { it !in "-%" }.split(Regex("""\s+""")).map { it.toInt() }.max()
 }
 
@@ -155,7 +158,7 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
 fun plusMinus(expression: String): Int {
-    if (expression.contains(Regex("""(\d\s+\d) | (\D\s+\D) | (\s\s+)"""))) throw IllegalArgumentException()
+    require(expression.contains(Regex("""^\d(\s[+-]\s\d+)*$""")))
     val numbers = expression.filter { it != ' ' }.split(Regex("""\+|-""")).map { it.toInt() }
     var result = numbers[0]
     var count = 1
@@ -192,13 +195,14 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
-    if (description.contains(Regex("""(\s\s+) | (\d\s) | (\.\D) | (а-я\d) | (;\w)""")) || description.isEmpty())
-        return ""
-    val productMap = mutableMapOf<Double, String>()
-    description.split("; ").forEach {
-        productMap[it.split(" ")[1].toDouble()] = it.split(" ")[0]
+    if (description.contains(Regex("""^[а-яА-я]+\s\d+(\.\d+)?(;\s[a-zA-z]+\s\d+(\.\d+)?;)*"""))) {
+        val productMap = mutableMapOf<String, Double>()
+        description.split("; ").forEach {
+            productMap[it.split(" ")[0]] = it.split(" ")[1].toDouble()
+        }
+        productMap.forEach { if (it.value == productMap.maxOf { it.value }) return it.key }
     }
-    return productMap[productMap.maxOf { it.key }]!!
+    return ""
 }
 
 /**
