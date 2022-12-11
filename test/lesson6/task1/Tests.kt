@@ -93,6 +93,7 @@ class Tests {
     @Tag("6")
     fun plusMinus() {
         assertEquals(0, plusMinus("0"))
+        assertEquals(10, plusMinus("10"))
         assertEquals(4, plusMinus("2 + 2"))
         assertEquals(6, plusMinus("2 + 31 - 40 + 13"))
         assertEquals(-1, plusMinus("0 - 1"))
@@ -116,6 +117,7 @@ class Tests {
     @Tag("6")
     fun mostExpensive() {
         assertEquals("", mostExpensive(""))
+        assertEquals("a", mostExpensive("a 0"))
         assertEquals("Курица", mostExpensive("Хлеб 39.9; Молоко 62.5; Курица 184.0; Конфеты 89.9"))
         assertEquals("Вино", mostExpensive("Вино 255.0"))
         assertEquals("", mostExpensive("Qq rr"))
