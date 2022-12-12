@@ -308,8 +308,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     tagText = Regex("""~~([\s\S]*?)~~""").replace(tagText) {
         "<s>${it.value.replace("~~", "")}</s>"
     }
-    var textList = tagText.split("\n").toMutableList()
-    var finalString = StringBuilder()
+    val textList = tagText.split("\n").toMutableList()
+    val finalString = StringBuilder()
     for (n in textList.indices) {
         if (textList[n].trim().isEmpty() && finalString.isNotEmpty()) {
             if (n + 1 < textList.size && textList[n + 1].trim().isNotEmpty()) finalString.append("</p><p>")
@@ -513,8 +513,13 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 it.write(stringLhv[n].toString() + "\n")
                 midtermStr = midterm.toString() + stringLhv[n]
                 midterm = midtermStr.toInt()
-                it.write(" ".repeat(n + 1 - (rhv * (midterm / rhv)).toString().length) + "-${rhv * (midterm / rhv)}\n")
-                it.write(" ".repeat(n + 1 - (rhv * (midterm / rhv)).toString().length) + "-".repeat("-${rhv * (midterm / rhv)}".length) + "\n")
+                it.write(
+                    " ".repeat(n + 1 - (rhv * (midterm / rhv)).toString().length) +
+                            "-${rhv * (midterm / rhv)}\n")
+                it.write(
+                    " ".repeat(n + 1 - (rhv * (midterm / rhv)).toString().length) +
+                            "-".repeat("-${rhv * (midterm / rhv)}".length) + "\n"
+                )
                 step += midterm.toString().length - (midterm - (rhv * (midterm / rhv))).toString().length +
                         midtermStr.length - midterm.toString().length
                 midterm -= (rhv * (midterm / rhv))
