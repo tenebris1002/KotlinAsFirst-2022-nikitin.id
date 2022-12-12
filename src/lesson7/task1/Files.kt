@@ -492,6 +492,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         var subInt: Int
         var secondStrStep: Int
         var midtermStr: String
+        var signCorr = 0
         val stringLhv = lhv.toString()
         for (i in stringLhv.indices) {
             subString.append(stringLhv[i])
@@ -524,9 +525,10 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 it.write(
                     " ".repeat(n + 1 - (rhv * (midterm / rhv)).toString().length) +
                             "-${rhv * (midterm / rhv)}\n")
+                if ((rhv * (midterm / rhv)).toString().length == midtermStr.length) signCorr = 1
                 it.write(
-                    " ".repeat(n + 1 - (rhv * (midterm / rhv)).toString().length) +
-                            "-".repeat("-${rhv * (midterm / rhv)}".length) + "\n"
+                    " ".repeat(step - signCorr) +
+                            "-".repeat(midtermStr.length + signCorr) + "\n"
                 )
                 step += midterm.toString().length - (midterm - (rhv * (midterm / rhv))).toString().length +
                         midtermStr.length - midterm.toString().length
