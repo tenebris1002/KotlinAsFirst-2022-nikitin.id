@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import kotlin.math.abs
 import kotlin.text.StringBuilder
 
 // Урок 7: работа с файлами
@@ -497,20 +498,21 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             subInt = subString.toString().toInt()
             if (subInt / rhv != 0) {
                 midterm = subInt % rhv
-                step = (rhv * (subInt / rhv)).toString().length
                 if (subString.length == (rhv * (subInt / rhv)).toString().length) {
                     it.write(" ")
                     secondStrStep = 0
                 } else secondStrStep = 1
+                step = subString.length - (subInt % rhv).toString().length
                 it.write("$lhv | $rhv\n")
                 it.write(
                     "-${rhv * (subInt / rhv)}" +
                             " ".repeat(" $lhv | ".length - "-${rhv * (subInt / rhv)}".length - secondStrStep) +
                             (lhv / rhv).toString()
                 )
-                it.write("\n" + "-".repeat(step + 1) + "\n")
-                it.write(" ".repeat(step) + midterm.toString())
+                it.write("\n" + "-".repeat(subString.length + abs(secondStrStep - 1)) + "\n")
+                it.write(" ".repeat(step + abs(secondStrStep - 1)) + midterm.toString())
                 n = i + 1
+                step += abs(secondStrStep - 1)
                 break
             }
         }
