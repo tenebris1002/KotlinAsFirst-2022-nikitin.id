@@ -2,9 +2,8 @@
 
 package lesson7.task1
 
-import ru.spbstu.wheels.out
 import java.io.File
-import java.lang.StringBuilder
+import kotlin.text.StringBuilder
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -489,22 +488,24 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         var midterm = -1
         var n = -1
         var step = -1
-        var substring: Int
+        var subString = StringBuilder()
+        var subInt: Int
         var midtermStr: String
         val stringLhv = lhv.toString()
         for (i in stringLhv.indices) {
-            substring = stringLhv.substring(0, i).toInt()
-            if (substring / rhv != 0) {
-                midterm = substring % rhv
-                step = (rhv * (substring / rhv)).toString().length
+            subString.append(stringLhv[i])
+            subInt = subString.toString().toInt()
+            if (subInt / rhv != 0) {
+                midterm = subInt % rhv
+                step = (rhv * (subInt / rhv)).toString().length
                 it.write(
-                    "-${rhv * (substring / rhv)}" +
-                            " ".repeat(" $lhv | ".length - "-${rhv * (substring / rhv)}".length) +
+                    "-${rhv * (subInt / rhv)}" +
+                            " ".repeat(" $lhv | ".length - "-${rhv * (subInt / rhv)}".length) +
                             (lhv / rhv).toString()
                 )
                 it.write("\n" + "-".repeat(step + 1) + "\n")
                 it.write(" ".repeat(step) + midterm.toString())
-                n = i
+                n = i + 1
                 break
             }
         }
