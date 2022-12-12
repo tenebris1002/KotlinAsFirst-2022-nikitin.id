@@ -524,8 +524,10 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 midterm = midtermStr.toInt()
                 it.write(
                     " ".repeat(n + 1 - (rhv * (midterm / rhv)).toString().length) +
-                            "-${rhv * (midterm / rhv)}\n")
-                if ((rhv * (midterm / rhv)).toString().length == midtermStr.length) signCorr = 1
+                            "-${rhv * (midterm / rhv)}\n"
+                )
+                if ((rhv * (midterm / rhv)).toString().length == midtermStr.length && midtermStr[0] != '0') signCorr = 1
+                else signCorr = 0
                 it.write(
                     " ".repeat(step - signCorr) +
                             "-".repeat(midtermStr.length + signCorr) + "\n"
