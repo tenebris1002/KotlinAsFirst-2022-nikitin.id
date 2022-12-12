@@ -300,13 +300,13 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var tagText = Regex("""\*\*([\s\S]*?)\*\*""").replace(File(inputName).readText()) {
-        "<b>" + it.value.replace("**", "") + "</b>"
+        "<b>${it.value.replace("**", "")}</b>"
     }
     tagText = Regex("""\*([\s\S]*?)\*""").replace(tagText) {
-        "<i>" + it.value.replace("*", "") + "</i>"
+        "<i>${it.value.replace("*", "")}</i>"
     }
     tagText = Regex("""~~([\s\S]*?)~~""").replace(tagText) {
-        "<s>" + it.value.replace("~~", "") + "</s>"
+        "<s>${it.value.replace("~~", "")}</s>"
     }
     var textList = tagText.split("\n").toMutableList()
     var finalString = StringBuilder()
