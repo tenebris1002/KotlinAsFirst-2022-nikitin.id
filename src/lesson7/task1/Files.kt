@@ -4,6 +4,7 @@ package lesson7.task1
 
 import ru.spbstu.wheels.out
 import java.io.File
+import java.lang.StringBuilder
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -86,9 +87,9 @@ fun deleteMarked(inputName: String, outputName: String) {
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int>
 {
     val result = mutableMapOf<String, Int>()
-    val lines = File(inputName).readLines()
+    val lines = File(inputName).readText().lowercase()
     for (str in substrings) {
-        result[str] = lines.count { str == it }
+        result[str] = "(?=\\$str)".toRegex(RegexOption.IGNORE_CASE).findAll(lines).count()
     }
     return result
 }
@@ -298,7 +299,25 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    var tagText = Regex("""\*\*([\s\S]*?)\*\*""").replace(File(inputName).readText()) {
+        "<b>" + it.value.replace("**", "") + "</b>"
+    }
+    tagText = Regex("""\*([\s\S]*?)\*""").replace(tagText) {
+        "<i>" + it.value.replace("*", "") + "</i>"
+    }
+    tagText = Regex("""~~([\s\S]*?)~~""").replace(tagText) {
+        "<s>" + it.value.replace("~~", "") + "</s>"
+    }
+    var textList = tagText.split("\n").toMutableList()
+    var finalString = StringBuilder()
+    for (n in textList.indices) {
+        if (textList[n].trim().isEmpty()) {
+            if (n + 1 < textList.size && textList[n + 1].trim().isNotEmpty()) finalString.append("</p><p>")
+        } else finalString.append(textList[n])
+    }
+    File(outputName).bufferedWriter().use {
+        it.write(("<html><body><p>${finalString.toString()}</p></body></html>"))
+    }
 }
 
 /**
