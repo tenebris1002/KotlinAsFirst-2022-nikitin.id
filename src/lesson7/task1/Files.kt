@@ -484,12 +484,12 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     File(outputName).bufferedWriter().use {
-        it.write(" $lhv | $rhv\n")
         var midterm = -1
         var n = -1
         var step = -1
         var subString = StringBuilder()
         var subInt: Int
+        var secondStrStep: Int
         var midtermStr: String
         val stringLhv = lhv.toString()
         for (i in stringLhv.indices) {
@@ -498,9 +498,14 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             if (subInt / rhv != 0) {
                 midterm = subInt % rhv
                 step = (rhv * (subInt / rhv)).toString().length
+                if (subString.length == (rhv * (subInt / rhv)).toString().length) {
+                    it.write(" ")
+                    secondStrStep = 0
+                } else secondStrStep = 1
+                it.write("$lhv | $rhv\n")
                 it.write(
                     "-${rhv * (subInt / rhv)}" +
-                            " ".repeat(" $lhv | ".length - "-${rhv * (subInt / rhv)}".length) +
+                            " ".repeat(" $lhv | ".length - "-${rhv * (subInt / rhv)}".length - secondStrStep) +
                             (lhv / rhv).toString()
                 )
                 it.write("\n" + "-".repeat(step + 1) + "\n")
@@ -530,9 +535,14 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         } else {
             midterm = lhv % rhv
             step = (rhv * (lhv / rhv)).toString().length
+            if (stringLhv.length == (rhv * (lhv / rhv)).toString().length) {
+                it.write(" ")
+                secondStrStep = 0
+            } else secondStrStep = 1
+            it.write("$lhv | $rhv\n")
             it.write(
                 "-${rhv * (lhv / rhv)}" +
-                        " ".repeat(" $lhv | ".length - "-${rhv * (lhv / rhv)}".length) +
+                        " ".repeat(" $lhv | ".length - "-${rhv * (lhv / rhv)}".length - secondStrStep) +
                         (lhv / rhv).toString()
             )
             it.write("\n" + "-".repeat(step + 1) + "\n")
