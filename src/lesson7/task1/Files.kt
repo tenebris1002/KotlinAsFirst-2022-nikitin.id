@@ -534,7 +534,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
             }
         } else {
             midterm = lhv % rhv
-            step = (rhv * (lhv / rhv)).toString().length
+            step = (rhv * (lhv / rhv)).toString().length + 1
             if (stringLhv.length == (rhv * (lhv / rhv)).toString().length) {
                 it.write(" ")
                 secondStrStep = 0
@@ -545,8 +545,9 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                         " ".repeat(" $lhv | ".length - "-${rhv * (lhv / rhv)}".length - secondStrStep) +
                         (lhv / rhv).toString()
             )
-            it.write("\n" + "-".repeat(step + 1) + "\n")
-            it.write(" ".repeat(step) + midterm.toString())
+            it.write("\n" + "-".repeat(step) + "\n")
+            if (lhv % 10 == lhv) it.write(" ")
+            it.write(midterm.toString())
         }
     }
 }
