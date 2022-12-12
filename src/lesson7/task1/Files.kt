@@ -492,7 +492,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         var substring: Int
         var midtermStr: String
         val stringLhv = lhv.toString()
-        for (i in 1 until stringLhv.length) {
+        for (i in stringLhv.indices) {
             substring = stringLhv.substring(0, i).toInt()
             if (substring / rhv != 0) {
                 midterm = substring % rhv
