@@ -107,15 +107,13 @@ fun dateDigitToStr(digital: String): String = TODO()
  */
 fun flattenPhoneNumber(phone: String): String {
     var result = StringBuilder()
-    if (phone.filter { it in "1234567890+-() " } != phone ||
-        (phone.filter { it in "1234567890()" }.contains(Regex("""(\(\))|(^\d*\))|(\(\d*$)|(^\d*\(\d*\)$)""")) &&
-                phone.contains(Regex("""[()]"""))
-                )
-    ) return ""
-    else {
+    if (phone.filter { it in "0123456789+()" }.contains(Regex("""^(\+\d+)?(\(\d+\))?\d+$""")) &&
+        phone.filter { it in "0123456789-+() " } == phone
+    ) {
         if (phone.trim().contains(Regex("""^\+"""))) result.append("+")
         result.append(phone.filter { it !in "+-() " })
     }
+    else return ""
     return result.toString()
 }
 

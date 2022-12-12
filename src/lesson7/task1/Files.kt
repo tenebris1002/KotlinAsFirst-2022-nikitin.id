@@ -311,7 +311,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var textList = tagText.split("\n").toMutableList()
     var finalString = StringBuilder()
     for (n in textList.indices) {
-        if (textList[n].trim().isEmpty()) {
+        if (textList[n].trim().isEmpty() && finalString.isNotEmpty()) {
             if (n + 1 < textList.size && textList[n + 1].trim().isNotEmpty()) finalString.append("</p><p>")
         } else finalString.append(textList[n])
     }
