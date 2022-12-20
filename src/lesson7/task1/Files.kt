@@ -2,7 +2,6 @@
 
 package lesson7.task1
 
-import lesson5.task1.filterByCountryCode
 import java.io.File
 import kotlin.math.abs
 import kotlin.text.StringBuilder
@@ -427,7 +426,7 @@ fun markdownToHtmlLists(inputName: String, outputName: String) {
     val lines = File(inputName).readLines()
     val finalString = StringBuilder()
     val stack = mutableListOf<String>()
-    var counter = 0
+    var counter: Int
     if (lines.isNotEmpty()) {
         for (line in lines) {
             counter = 0
@@ -457,8 +456,55 @@ fun markdownToHtmlLists(inputName: String, outputName: String) {
  * - Списки, отделённые друг от друга пустой строкой, являются разными и должны оказаться в разных параграфах выходного файла.
  *
  */
+fun markdownToHtmlSimpleForString(str: String): String {
+    var tagString = Regex("""\*\*[\S\s]*?\*\*""").replace(str) {
+        "<b>${it.value.replace("**", "")}</b>"
+    }
+    tagString = Regex("""\*[\S\s]*?\*""").replace(tagString) {
+        "<i>${it.value.replace("*", "")}</i>"
+    }
+    tagString = Regex("""~~[\S\s]*?~~""").replace(tagString) {
+        "<s>${it.value.replace("~~", "")}</s>"
+    }
+    return tagString
+}
 fun markdownToHtml(inputName: String, outputName: String) {
-    TODO()
+    val lines = File(inputName).readLines()
+    val finalString = StringBuilder()
+    val stack = mutableListOf<String>()
+    var counter: Int
+    var line: String
+    var htmlSimpledWord: String
+    if (lines.isNotEmpty()) {
+        for (n in lines.indices) {
+            line = lines[n]
+            htmlSimpledWord = markdownToHtmlSimpleForString(line)
+            if (line.trim().isEmpty() && finalString.isNotEmpty()) {
+                if (stack.isNotEmpty()) while (stack.size > 0) finalString.append("</li></${stack.removeLast()}")
+                if (n + 1 < lines.size && lines[n + 1].trim().isNotEmpty()) finalString.append("</p><p>")
+            } else {
+                if (line.contains(Regex("""^\s*((\*)|(\d+\.))\s"""))) {
+                    counter = 0
+                    while (line[counter] == ' ') counter += 1
+                    if (counter > 4 * (stack.size - 1)) {
+                        if (line[counter] == '*') stack.add("ul>")
+                        else if (line[counter] in "1234567890") stack.add("ol>")
+                        finalString.append("<${stack.last()}<li>${word(htmlSimpledWord)}")
+                    } else if (counter == 4 * (stack.size - 1)) {
+                        finalString.append("</li><li>${word(htmlSimpledWord)}")
+                    } else {
+                        finalString.append("</li></${stack.removeLast()}</li><li>${word(htmlSimpledWord)}")
+                    }
+                    if (n + 1 == lines.size || !lines[n + 1].contains(Regex("""^\s*((\*)|(\d+\.))\s"""))) {
+                        while (stack.size > 0) finalString.append("</li></${stack.removeLast()}")
+                    }
+                } else finalString.append(htmlSimpledWord)
+            }
+        }
+    }
+    File(outputName).bufferedWriter().use {
+        it.write(("<html><body><p>${finalString}</p></body></html>"))
+    }
 }
 
 /**
