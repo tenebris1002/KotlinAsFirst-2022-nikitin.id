@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import lesson5.task1.filterByCountryCode
 import java.io.File
 import kotlin.math.abs
 import kotlin.text.StringBuilder
@@ -417,8 +418,35 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
 ///////////////////////////////конец файла//////////////////////////////////////////////////////////////////////////////
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
+fun word(str: String): String {
+    var counter = 0
+    while (str[counter] in " *0123456789.") counter += 1
+    return str.substring(counter)
+}
 fun markdownToHtmlLists(inputName: String, outputName: String) {
-    TODO()
+    val lines = File(inputName).readLines()
+    val finalString = StringBuilder()
+    val stack = mutableListOf<String>()
+    var counter = 0
+    if (lines.isNotEmpty()) {
+        for (line in lines) {
+            counter = 0
+            while (line[counter] == ' ') counter += 1
+            if (counter > 4 * (stack.size - 1)) {
+                if (line[counter] == '*') stack.add("ul>")
+                else if (line[counter] in "1234567890") stack.add("ol>")
+                finalString.append("<${stack.last()}<li>${word(line)}")
+            } else if (counter == 4 * (stack.size - 1)) {
+                finalString.append("</li><li>${word(line)}")
+            } else {
+                finalString.append("</li></${stack.removeLast()}</li><li>${word(line)}")
+            }
+        }
+        while (stack.size > 0) finalString.append("</li></${stack.removeLast()}")
+    }
+    File(outputName).bufferedWriter().use {
+        it.write(("<html><body><p>${finalString}</p></body></html>"))
+    }
 }
 
 /**
