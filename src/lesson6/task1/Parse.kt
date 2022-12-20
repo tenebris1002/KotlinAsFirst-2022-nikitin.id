@@ -2,7 +2,7 @@
 
 package lesson6.task1
 
-import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
 import java.lang.StringBuilder
 
 // Урок 6: разбор строк, исключения
@@ -106,7 +106,7 @@ fun dateDigitToStr(digital: String): String = TODO()
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
 fun flattenPhoneNumber(phone: String): String {
-    var result = StringBuilder()
+    val result = StringBuilder()
     if (phone.filter { it in "0123456789+()" }.contains(Regex("""^(\+\d+)?(\(\d+\))?\d+$""")) &&
         phone.filter { it in "0123456789-+() " } == phone
     ) {
@@ -193,7 +193,7 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * Все цены должны быть больше нуля либо равны нулю.
  */
 fun mostExpensive(description: String): String {
-    if (description.contains(Regex("""^[\D\S]+\s\d+(\.\d+)?(;\s[a-zA-z]+\s\d+(\.\d+)?;)*"""))) {
+    if (description.matches(Regex("""^([a-zA-zа-яА-я]+\s\d+(\.\d+)?;\s)*[a-zA-zа-яА-я]+\s\d+(\.\d+)?$"""))) {
         val productMap = mutableMapOf<String, Double>()
         description.split("; ").forEach {
             productMap[it.split(" ")[0]] = it.split(" ")[1].toDouble()
@@ -253,3 +253,37 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+/**
+ * Тест на автомат
+ */
+fun placesFun(
+    places: MutableList<MutableList<Boolean>>,
+    requests: Map<String, Pair<Int, Int>>
+): MutableMap<String, MutableList<Int>> {
+    val result = mutableMapOf<String, MutableList<Int>>()
+    var placesCount: Int
+    var accPlacesCount: Int
+    var n: Int
+    var placesRow: MutableList<Boolean>
+    for ((key, pair) in requests) {
+        placesRow = places[pair.first]
+        accPlacesCount = 0
+        placesRow.forEach { if (!it) accPlacesCount += 1 }
+        if (accPlacesCount >= pair.second) {
+            placesCount = 0
+            n = 0
+            while (placesCount != pair.second) {
+                if (!placesRow[n]) {
+                    if (result[key].isNullOrEmpty()) result[key] = mutableListOf(n)
+                    else result[key]!!.add(n)
+                    placesCount += 1
+                    places[pair.first][n] = true
+                }
+                n += 1
+            }
+        } else throw IllegalStateException()
+    }
+    return result
+}
+

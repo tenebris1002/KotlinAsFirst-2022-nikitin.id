@@ -299,16 +299,16 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    var tagText = Regex("""\*\*([\s\S]*?)\*\*""").replace(File(inputName).readText()) {
-        "<b>${it.value.replace("**", "")}</b>"
+    var tagText = Regex("""\*\*[\S\s]*?\*\*""").replace(File(inputName).readText()) {
+        "<b>" + it.value.replace("**", "") + "</b>"
     }
-    tagText = Regex("""\*([\s\S]*?)\*""").replace(tagText) {
-        "<i>${it.value.replace("*", "")}</i>"
+    tagText = Regex("""\*[\S\s]*?\*""").replace(tagText) {
+        "<i>" + it.value.replace("*", "") + "</i>"
     }
-    tagText = Regex("""~~([\s\S]*?)~~""").replace(tagText) {
-        "<s>${it.value.replace("~~", "")}</s>"
+    tagText = Regex("""~~[\S\s]*?~~""").replace(tagText) {
+        "<s>" + it.value.replace("~~", "") + "</s>"
     }
-    val textList = tagText.split("\n").toMutableList()
+    val textList = tagText.split(System.lineSeparator()).toMutableList()
     val finalString = StringBuilder()
     for (n in textList.indices) {
         if (textList[n].trim().isEmpty() && finalString.isNotEmpty()) {
@@ -488,11 +488,11 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         var midterm = -1
         var n = -1
         var step = -1
-        var subString = StringBuilder()
+        val subString = StringBuilder()
         var subInt: Int
         var secondStrStep: Int
         var midtermStr: String
-        var signCorr = 0
+        var signCorr: Int
         val stringLhv = lhv.toString()
         for (i in stringLhv.indices) {
             subString.append(stringLhv[i])
@@ -504,13 +504,17 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                     secondStrStep = 0
                 } else secondStrStep = 1
                 step = subString.length - (subInt % rhv).toString().length
-                it.write("$lhv | $rhv\n")
+                it.write("$lhv | $rhv" + System.lineSeparator())
                 it.write(
                     "-${rhv * (subInt / rhv)}" +
                             " ".repeat(" $lhv | ".length - "-${rhv * (subInt / rhv)}".length - secondStrStep) +
                             (lhv / rhv).toString()
                 )
-                it.write("\n" + "-".repeat(subString.length + abs(secondStrStep - 1)) + "\n")
+                it.write(
+                    System.lineSeparator() + "-".repeat(
+                        subString.length + abs(secondStrStep - 1)
+                    ) + System.lineSeparator()
+                )
                 it.write(" ".repeat(step + abs(secondStrStep - 1)) + midterm.toString())
                 n = i + 1
                 step += abs(secondStrStep - 1)
@@ -519,18 +523,18 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         }
         if (lhv / rhv != 0) {
             while (n != stringLhv.length) {
-                it.write(stringLhv[n].toString() + "\n")
+                it.write(stringLhv[n].toString() + System.lineSeparator())
                 midtermStr = midterm.toString() + stringLhv[n]
                 midterm = midtermStr.toInt()
                 it.write(
                     " ".repeat(n + 1 - (rhv * (midterm / rhv)).toString().length) +
-                            "-${rhv * (midterm / rhv)}\n"
+                            "-${rhv * (midterm / rhv)}${System.lineSeparator()}"
                 )
                 if ((rhv * (midterm / rhv)).toString().length == midtermStr.length && midtermStr[0] != '0') signCorr = 1
                 else signCorr = 0
                 it.write(
                     " ".repeat(step - signCorr) +
-                            "-".repeat(midtermStr.length + signCorr) + "\n"
+                            "-".repeat(midtermStr.length + signCorr) + System.lineSeparator()
                 )
                 step += midterm.toString().length - (midterm - (rhv * (midterm / rhv))).toString().length +
                         midtermStr.length - midterm.toString().length
@@ -545,13 +549,13 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 it.write(" ")
                 secondStrStep = 0
             } else secondStrStep = 1
-            it.write("$lhv | $rhv\n")
+            it.write("$lhv | $rhv" + System.lineSeparator())
             it.write(
                 "-${rhv * (lhv / rhv)}" +
                         " ".repeat(" $lhv | ".length - "-${rhv * (lhv / rhv)}".length - secondStrStep) +
                         (lhv / rhv).toString()
             )
-            it.write("\n" + "-".repeat(step) + "\n")
+            it.write(System.lineSeparator() + "-".repeat(step) + System.lineSeparator())
             if (lhv % 10 == lhv) it.write(" ")
             it.write(midterm.toString())
         }

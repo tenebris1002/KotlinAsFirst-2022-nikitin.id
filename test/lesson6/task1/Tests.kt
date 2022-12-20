@@ -157,4 +157,45 @@ class Tests {
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "+>+>[+>", 3) }
         assertThrows(IllegalStateException::class.java) { computeDeviceCells(20, ">>>>>>>>>>>>>", 12) }
     }
+    @Test
+    fun placesFun() {
+        assertEquals(
+            mapOf("Вася" to listOf(1, 2), "Петя" to listOf(1)),
+            placesFun(
+                mutableListOf(
+                    mutableListOf(true, false, false, false, true, false),
+                    mutableListOf(true, false, true, false)
+                ),
+                mapOf("Вася" to (0 to 2), "Петя" to (1 to 1))
+            )
+        )
+        assertEquals(
+            mapOf("Вася" to listOf(0, 1), "Петя" to listOf(1, 3), "Саша" to listOf(2, 3, 5)),
+            placesFun(
+                mutableListOf(
+                    mutableListOf(false, false, false, false, true, false),
+                    mutableListOf(true, false, true, false)
+                ),
+                mapOf("Вася" to (0 to 2), "Петя" to (1 to 2), "Саша" to (0 to 3))
+            )
+        )
+        assertThrows(IllegalStateException::class.java) {
+            placesFun(
+                mutableListOf(
+                    mutableListOf(true, true, true, true, true, false),
+                    mutableListOf(true, false, true, false)
+                ),
+                mapOf("Вася" to (0 to 2), "Петя" to (1 to 1))
+            )
+        }
+        assertThrows(IllegalStateException::class.java) {
+            placesFun(
+                mutableListOf(
+                    mutableListOf(true, false, false, true, true, true),
+                    mutableListOf(true, false, true, false)
+                ),
+                mapOf("Вася" to (0 to 2), "Петя" to (1 to 1), "Саша" to (0 to 1))
+            )
+        }
+    }
 }
