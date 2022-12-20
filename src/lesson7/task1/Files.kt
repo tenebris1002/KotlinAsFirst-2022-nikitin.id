@@ -543,16 +543,18 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
                 n += 1
             }
         } else {
+            step = stringLhv.length
             midterm = lhv % rhv
-            step = (rhv * (lhv / rhv)).toString().length + 1
-            if (stringLhv.length == (rhv * (lhv / rhv)).toString().length) {
+            if (stringLhv.length == 1) {
                 it.write(" ")
+                step += 1
                 secondStrStep = 0
             } else secondStrStep = 1
             it.write("$lhv | $rhv" + System.lineSeparator())
             it.write(
-                "-${rhv * (lhv / rhv)}" +
-                        " ".repeat(" $lhv | ".length - "-${rhv * (lhv / rhv)}".length - secondStrStep) +
+                " ".repeat(step - 2) +
+                        "-${rhv * (lhv / rhv)}" +
+                        " ".repeat(" $lhv | ".length - step - secondStrStep) +
                         (lhv / rhv).toString()
             )
             it.write(System.lineSeparator() + "-".repeat(step) + System.lineSeparator())
