@@ -300,15 +300,15 @@ Suspendisse ~~et elit in enim tempus iaculis~~.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var tagText = Regex("""\*\*[\S\s]*?\*\*""").replace(File(inputName).readText()) {
-        "<b>" + it.value.replace("**", "") + "</b>"
+        "<b>${it.value.replace("**", "")}</b>"
     }
     tagText = Regex("""\*[\S\s]*?\*""").replace(tagText) {
-        "<i>" + it.value.replace("*", "") + "</i>"
+        "<i>${it.value.replace("*", "")}</i>"
     }
     tagText = Regex("""~~[\S\s]*?~~""").replace(tagText) {
-        "<s>" + it.value.replace("~~", "") + "</s>"
+        "<s>${it.value.replace("~~", "")}</s>"
     }
-    val textList = tagText.split(System.lineSeparator()).toMutableList()
+    val textList = tagText.split(System.lineSeparator()).toList()
     val finalString = StringBuilder()
     for (n in textList.indices) {
         if (textList[n].trim().isEmpty() && finalString.isNotEmpty()) {
@@ -316,7 +316,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         } else finalString.append(textList[n])
     }
     File(outputName).bufferedWriter().use {
-        it.write(("<html><body><p>${finalString.toString()}</p></body></html>"))
+        it.write(("<html><body><p>${finalString}</p></body></html>"))
     }
 }
 
